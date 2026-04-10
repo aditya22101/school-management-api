@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>School Manager</h1>
+            <p>Manage and discover schools around you</p>
+        </header>
+
+        <main>
+            <section class="card">
+                <h2>Add a New School</h2>
+                <form id="addSchoolForm">
+                    <div class="form-group">
+                        <label for="name">School Name</label>
+                        <input type="text" id="name" placeholder="Enter school name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" id="address" placeholder="Enter address" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="latitude">Latitude</label>
+                            <input type="number" id="latitude" step="any" placeholder="e.g. 28.6139" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="longitude">Longitude</label>
+                            <input type="number" id="longitude" step="any" placeholder="e.g. 77.2090" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn">Add School</button>
+                    <div id="addMessage" class="message"></div>
+                </form>
+            </section>
+
+            <section class="card">
+                <h2>Find Schools Near You</h2>
+                <div class="location-picker">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="userLat">Your Latitude</label>
+                            <input type="number" id="userLat" step="any" placeholder="Current Latitude">
+                        </div>
+                        <div class="form-group">
+                            <label for="userLon">Your Longitude</label>
+                            <input type="number" id="userLon" step="any" placeholder="Current Longitude">
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button id="getLocationBtn" class="btn btn-secondary">Use Current Location</button>
+                        <button id="searchBtn" class="btn">Search Schools</button>
+                    </div>
+                </div>
+
+                <div id="schoolListContainer">
+                    <ul id="schoolList">
+                        <!-- Schools will be listed here -->
+                        <div class="empty-state">No schools found. Try searching!</div>
+                    </ul>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 School Management API</p>
+        </footer>
+    </div>
+
+    <script>
+        const API_URL = ''; // Relative URL since it's served by the same express app
+
+        // Add School
+        document.getElementById('addSchoolForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const messageDiv = document.getElementById('addMessage');
+            
+            const data = {
+                name: document.getElementById('name').value,
+                address: document.getElementById('address').value,
+                latitude: parseFloat(document.getElementById('latitude').value),
+                longitude: parseFloat(document.getElementById('longitude').value)
+            };
+
+            btn.disabled = true;
+            btn.textContent = 'Adding...';
+
+            try {
+                const response = await fetch(`${API_URL}/addSchool`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                
+                if (response.ok) {
+                    messageDiv.textContent = '✓ School added successfully!';
+                    messageDiv.className = 'message success';
+                    e.target.reset();
+                } else {
+                    messageDiv.textContent = '✗ ' + (result.error || 'Failed to add school');
+                    messageDiv.className = 'message error';
+                }
+            } catch (err) {
+                messageDiv.textContent = '✗ Network error';
+                messageDiv.className = 'message error';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Add School';
+                setTimeout(() => { messageDiv.textContent = ''; messageDiv.className = 'message'; }, 3000);
+            }
+        });
+
+        // Get Current Location
+        document.getElementById('getLocationBtn').addEventListener('click', () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    document.getElementById('userLat').value = position.coords.latitude.toFixed(6);
+                    document.getElementById('userLon').value = position.coords.longitude.toFixed(6);
+                }, (error) => {
+                    alert('Error getting location: ' + error.message);
+                });
+            } else {
+                alert('Geolocation is not supported by this browser.');
+            }
+        });
+
+        // Search Schools
+        document.getElementById('searchBtn').addEventListener('click', async () => {
+            const lat = document.getElementById('userLat').value;
+            const lon = document.getElementById('userLon').value;
+            const list = document.getElementById('schoolList');
+
+            if (!lat || !lon) {
+                alert('Please provide your coordinates first.');
+                return;
+            }
+
+            list.innerHTML = '<div class="loader">Searching...</div>';
+
+            try {
+                const response = await fetch(`${API_URL}/listSchools?latitude=${lat}&longitude=${lon}`);
+                const schools = await response.json();
+                
+                if (schools.length === 0) {
+                    list.innerHTML = '<div class="empty-state">No schools found in the database.</div>';
+                    return;
+                }
+
+                list.innerHTML = schools.map(school => `
+                    <li class="school-item">
+                        <div class="school-info">
+                            <h3>${school.name}</h3>
+                            <p>${school.address}</p>
+                        </div>
+                        <div class="school-distance">
+                            <span>${school.distance.toFixed(2)} km</span>
+                            <small>away</small>
+                        </div>
+                    </li>
+                `).join('');
+            } catch (err) {
+                list.innerHTML = '<div class="message error">Error fetching schools.</div>';
+            }
+        });
+    </script>
+</body>
+</html>
