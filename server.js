@@ -16,7 +16,7 @@ app.use('/', schoolRoutes);
 
 // Start Server
 app.listen(PORT, () => {
-    console.log(`🚀 Server is running!`);
-    console.log(`👉 Access the frontend at: http://localhost:${PORT}`);
-    console.log(`Connected to database: ${process.env.DB_NAME} on ${process.env.DB_HOST}`);
+    console.log(`Server is running on port ${PORT}`);
+    console.log(`Environment: ${process.env.NODE_ENV || "development"}`);
+    console.log(`Database: ${process.env.DB_NAME} on ${process.env.DB_HOST}`);
 });
