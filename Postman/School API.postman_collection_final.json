@@ -1,0 +1,156 @@
+{
+  "info": {
+    "_postman_id": "e1516665-7f32-48fd-9eaf-04743b1faf92",
+    "name": "School API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "50390153",
+    "_collection_link": "https://go.postman.co/collection/50390153-e1516665-7f32-48fd-9eaf-04743b1faf92?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "http://localhost:3000/addSchool",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Raj School\",\r\n  \"address\": \"Mumbai\",\r\n  \"latitude\": 22.315,\r\n  \"longitude\": 88.432\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/addSchool",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "addSchool"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/listSchools?latitude=17.385&longitude=78.4867",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "listSchools"
+          ],
+          "query": [
+            {
+              "key": "latitude",
+              "value": "17.385"
+            },
+            {
+              "key": "longitude",
+              "value": "78.4867"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/listSchools?latitude=17.385&longitude=78.4867",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/listSchools?latitude=17.385&longitude=78.4867",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "listSchools"
+          ],
+          "query": [
+            {
+              "key": "latitude",
+              "value": "17.385"
+            },
+            {
+              "key": "longitude",
+              "value": "78.4867"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "listSchools_render",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://school-management-api-jep7.onrender.com/listSchools?latitude=17.385&longitude=78.4867",
+          "protocol": "https",
+          "host": [
+            "school-management-api-jep7",
+            "onrender",
+            "com"
+          ],
+          "path": [
+            "listSchools"
+          ],
+          "query": [
+            {
+              "key": "latitude",
+              "value": "17.385"
+            },
+            {
+              "key": "longitude",
+              "value": "78.4867"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "addSchhol_render",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Green Valley School\",\r\n  \"address\": \"MG Road, Hyderabad\",\r\n  \"latitude\": 17.385,\r\n  \"longitude\": 78.4867\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://school-management-api-jep7.onrender.com/addSchool",
+          "protocol": "https",
+          "host": [
+            "school-management-api-jep7",
+            "onrender",
+            "com"
+          ],
+          "path": [
+            "addSchool"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
