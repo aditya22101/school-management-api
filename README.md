@@ -2,6 +2,20 @@
 
 A modular Node.js and Express-based API for managing schools and listing them based on geographical proximity using the Haversine formula.
 
+##  Live API
+https://school-management-api-jep7.onrender.com
+
+##  Features
+- Add school API
+- List nearby schools API (distance-based)
+- MySQL database integration
+- Deployed on Render
+
+##  Test API
+POST /addSchool  
+GET /listSchools?latitude=&longitude=
+
+
 ##  Project Structure
 ```
 school-api/
@@ -51,7 +65,7 @@ npm install
 npm run dev
 ```
 
-## 🛠 Tech Stack
+## Tech Stack
 - **Backend**: Node.js, Express.js
 - **Database**: MySQL (Hosted on Railway)
 - **Frontend**: HTML5, Vanilla CSS, JS (Fetch API)
